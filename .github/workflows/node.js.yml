@@ -1,9 +1,5 @@
 name: Node.js CI
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [deployment_status]
 jobs:
   run_e2e_test:
     name: Run E2E test with Playwright
