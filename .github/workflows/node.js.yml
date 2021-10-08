@@ -9,6 +9,6 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
       - run: npm ci
-      - run: npm e2e-test
+      - run: npm run e2e-test
         env:
           TARGET_URL: ${{github.event.deployment_status.target_url}}
