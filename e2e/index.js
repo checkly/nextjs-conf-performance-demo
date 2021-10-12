@@ -4,7 +4,7 @@ async function run () {
   const browser = await chromium.launch()
   const page = await browser.newPage()
 
-  const targetUrl = process.env.TARGET_URL || 'https://google.com'
+  const targetUrl = process.env.TARGET_URL || 'https://nextjs-conf-demo.checklyhq.com/'
 
   console.log(`Opening target URL: ${targetUrl}`)
   await page.goto(targetUrl)
