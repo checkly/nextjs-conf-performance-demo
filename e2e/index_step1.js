@@ -27,7 +27,8 @@ async function run () {
 
   page.on('console', msg => {
     if (msg.type() === 'error') {
-      console.info(`Console error: ${msg.text()}`)
+      const location = msg.location()
+      console.info(`Console error: ${msg.text()} - ${location.url} - ${location.lineNumber}:${location.columnNumber}`)
       report.consoleErrors++
     }
   })

@@ -27,6 +27,7 @@ export default function Home() {
           <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
         </a>
       </footer>
+      <img src="https://thisdoesnotexistimprettysure123yolo.com" alt="So yeah, this image does not exist."/>
     </div>
   )
 }
