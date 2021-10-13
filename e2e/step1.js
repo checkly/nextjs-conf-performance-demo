@@ -9,6 +9,9 @@ async function run () {
   console.log(`Opening target URL: ${targetUrl}`)
   await page.goto(targetUrl)
 
+  console.log('Clicking the button')
+  await page.click('[data-test-id=button]')
+
   console.log('Snapping a screenshot')
   await page.screenshot({ path: 'homepage.jpg' })
 

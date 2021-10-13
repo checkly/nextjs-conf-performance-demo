@@ -1,9 +1,16 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import { useState } from 'react'
 
 console.error('Something really went wrong here')
 
 export default function Home() {
+  const [didClick, setClickState] = useState(false);
+
+  function toggle(){
+    setClickState(!didClick);
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -15,6 +22,8 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to my <a href="https://nextjs.org">Next.js</a> page!
         </h1>
+        <button className={styles.button} onClick={toggle} data-test-id="button">Click me</button>
+        <p style={{display: didClick ? "block" : "none"}}>You clicked it</p>
       </main>
 
       <footer className={styles.footer}>

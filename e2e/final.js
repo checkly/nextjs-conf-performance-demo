@@ -1,15 +1,16 @@
 const { chromium } = require('playwright-chromium')
+const path = require("path");
 
 async function run () {
+  const browser = await chromium.launch()
+  const page = await browser.newPage()
+
   const report = {
     requestUpto399: 0,
     requestsAbove399: 0,
     failedRequests: 0,
     consoleErrors: 0
   }
-
-  const browser = await chromium.launch()
-  const page = await browser.newPage()
 
   page.on('requestfailed', request => {
     console.info(`Failed request: ${request.url()}`)
@@ -33,6 +34,26 @@ async function run () {
     }
   })
 
+  const webVitalsMeasurements = {
+    FCP: null,
+    LCP: null
+  }
+
+  await page.addInitScript({path: path.join(__dirname, '../node_modules/web-vitals/dist/web-vitals.umd.js')})
+
+  await page.exposeFunction('__reportVitals__', (data) => {
+    const measurement = JSON.parse(data)
+    webVitalsMeasurements[measurement.name] = measurement.value
+  })
+
+  await page.addInitScript(() => {
+    const reportVitals = (measurement) => window.__reportVitals__(JSON.stringify(measurement))
+
+    window.addEventListener('DOMContentLoaded', () => {
+      webVitals.getFCP(reportVitals)
+      webVitals.getLCP(reportVitals, true)
+    })
+  })
 
   const targetUrl = process.env.TARGET_URL || 'https://nextjs-conf-demo.checklyhq.com/'
 
@@ -42,10 +63,14 @@ async function run () {
   console.log('Snapping a screenshot')
   await page.screenshot({ path: 'homepage.jpg' })
 
+  console.log('Clicking the button')
+  await page.click('[data-test-id=button]')
+
   console.log('Closing browser')
   await browser.close()
 
   console.table(report)
+  console.table(webVitalsMeasurements)
 }
 
 run()
